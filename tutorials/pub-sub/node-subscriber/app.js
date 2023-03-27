@@ -13,6 +13,7 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const lzbase62 = require('lzbase62');
 
 const app = express();
 // Dapr publishes messages with the application/cloudevents+json content-type
@@ -36,12 +37,14 @@ app.get('/dapr/subscribe', (_req, res) => {
 });
 
 app.post('/A', (req, res) => {
-    console.log("A: ", req.body.data.message);
+    const compressed = lzbase62.compress(req.body.data.message);
+    console.log("Mensaje comprimido: ", compressed);
     res.sendStatus(200);
 });
 
 app.post('/B', (req, res) => {
-    console.log("B: ", req.body.data.message);
+    const compressed = lzbase62.compress(req.body.data.message);
+    console.log("Mensaje comprimido: ", compressed);
     res.sendStatus(200);
 });
 
